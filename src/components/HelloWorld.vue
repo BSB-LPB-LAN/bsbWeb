@@ -2,11 +2,6 @@
   <div class="hello">
     <h1>{{ msg }}</h1>
     <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the as
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-
-      <br>
       <ul id="array-with-index">
         <li v-for="item in infos" :key="item.id">
             <router-link :to="`/category/${item.id}`" class="dropdown-item">{{ item.name +" (" + item.min +" - " +item.max + ")" }}</router-link>
@@ -22,8 +17,6 @@
 <script lang="ts">
 import { Vue, Options } from 'vue-class-component'
 
-type categoryType = { id: number; name: string; min: number; max: number };
-
 @Options({
   props: {
     msg: {
@@ -38,38 +31,10 @@ export default class HelloWorld extends Vue {
   msg!: string;
   counter = 0;
 
-  infos: categoryType[] = [];
-
   test = 0;
 
   beforeMount () {
     this.counter = parseInt(this.$route.params.id as string, 10)
-  }
-
-  beforeCreate () {
-    console.log('tot')
-    fetch('/api/JK=ALL', {
-      mode: 'cors',
-      credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
-      .then((resp) => resp.json())
-      .then((data) => {
-        const categories: categoryType[] = []
-
-        for (const key in data) {
-          const item = data[key]
-          categories.push({
-            id: parseInt(key, 10),
-            name: item.name,
-            min: item.min,
-            max: item.max
-          })
-        }
-        this.infos = categories
-      })
   }
 
   public increment () {

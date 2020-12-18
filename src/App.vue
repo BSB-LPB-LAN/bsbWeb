@@ -5,7 +5,7 @@
   <table align=center>
     <tr bgcolor=#f0f0f0>
       <td class="header" width=20% align=center>
-        <router-link to="/K">Heizungsfunktionen</router-link>
+        <router-link to="/Categories">Heizungsfunktionen</router-link>
       </td>
       <td class="header" width=20% align=center>
         <a href='/T'>Sensoren</a>
