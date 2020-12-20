@@ -16,6 +16,8 @@ export default class Category extends Vue {
 
     private bsb = new BSBLan()
 
+    private disposed = false
+
     async getValue (id: number) {
       const data = await fetch('/api/JQ=' + id)
       try {
@@ -38,12 +40,20 @@ export default class Category extends Vue {
         this.parameter = res
 
         for (const item of this.parameter) {
-          item.value = await this.getValue(item.id)
+          console.log('FETCH next ' + item.id)
+          if (!this.disposed) {
+            item.value = await this.getValue(item.id)
+          }
         }
       }
     }
 
+    beforeUnmount () {
+      this.disposed = true
+    }
+
     created () {
+      this.disposed = false
       this.updateView()
 
       this.$watch('$route', () => {

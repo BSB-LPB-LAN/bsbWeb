@@ -5,7 +5,14 @@ export interface Category {
   max: number;
 }
 
-export interface Parameter {id: number; name: string; value?: string; raw: object}
+export interface Parameter {
+  id: number;
+  name: string;
+  value?: string;
+  readonly: boolean;
+  enum: { value: number; name: string }[];
+  raw: object;
+}
 
 export class BSBLan {
     private useCache = true
@@ -71,6 +78,8 @@ export class BSBLan {
         parameter.push({
           id: parseInt(key, 10),
           name: item.name,
+          readonly: item.readonly,
+          enum: [],
           raw: item
         })
       }
