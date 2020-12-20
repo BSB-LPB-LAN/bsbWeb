@@ -8,34 +8,17 @@
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-
-type categoryType = { id: number; name: string; min: number; max: number };
+import { BSBLan, Category } from '@/service/bsblan'
 
 export default class Categories extends Vue {
-    infos: categoryType[] = [];
+    infos: Category[] = [];
 
     beforeCreate () {
-      fetch('/api/JK=ALL', {
-        mode: 'cors',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      })
-        .then((resp) => resp.json())
-        .then((data) => {
-          const categories: categoryType[] = []
+      const bsb = new BSBLan()
 
-          for (const key in data) {
-            const item = data[key]
-            categories.push({
-              id: parseInt(key, 10),
-              name: item.name,
-              min: item.min,
-              max: item.max
-            })
-          }
-          this.infos = categories
+      bsb.getCategories()
+        .then((data) => {
+          this.infos = data
         })
     }
 }

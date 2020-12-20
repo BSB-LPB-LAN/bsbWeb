@@ -38,10 +38,7 @@
 <style lang="scss">
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
 }
 
 #nav {
@@ -55,5 +52,53 @@
       color: #42b983;
     }
   }
+}
+
+A:link  {
+  color:blue;
+  text-decoration: none;
+}
+
+A:visited {
+  color:blue;
+  text-decoration: none;
+}
+
+A:hover {
+  color:red;
+  text-decoration: none;
+  background-color:yellow
+}
+
+A:active {
+  color:blue;
+  text-decoration: none;
+}
+
+A:focus {
+  color:red;
+  text-decoration: none;
+}
+
+table {
+  width: 100%;
+  max-width: 1024px;
+  margin: auto;
+}
+
+td {
+  vertical-align: top;
+}
+
+td.header {
+  vertical-align: middle;
+}
+
+input {
+  width: 100%; box-sizing: border-box;
+}
+
+select {
+  width: 100%;
 }
 </style>

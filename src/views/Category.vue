@@ -2,50 +2,44 @@
   <table>
     <tr v-for="item in parameter" :key="item.id">
       <td>{{ item.id +': ' + item.name }}</td>
-      <td><input></td>
+      <td>{{ item.value }}</td>
     </tr>
   </table>
 </template>
 
 <script lang="ts">
 import { Vue } from 'vue-class-component'
-
-type parameterType = {id: number; name: string; value?: string};
+import { BSBLan, Parameter } from '@/service/bsblan'
 
 export default class Category extends Vue {
-    parameter: parameterType[] = [];
+    parameter: Parameter[] = [];
 
-    updateView () {
-      const id = (this.$route.params.id as string) ?? ''
+    private bsb = new BSBLan()
 
-      let found = false
+    async getValue (id: number) {
+      const data = await fetch('/api/JQ=' + id)
       try {
-        this.parameter = JSON.parse(localStorage[id])
-        console.log(this.parameter)
-        found = true
-      } catch {
-        found = false
+        const json = await data.json()
+        return json['' + id].value
+      } catch (err) {
+        debugger
+        console.log(err)
       }
+    }
 
-      if (!found) {
-        fetch('/api/JK=' + id, {
-          mode: 'cors',
-          credentials: 'include'
-        })
-          .then((resp) => resp.json())
-          .then((data) => {
-            const parameter: parameterType[] = []
+    async updateView () {
+      const id = parseInt((this.$route.params.id as string) ?? '', 10)
+      if (!isNaN(id)) {
+        const res = await this.bsb.getCategory(id)
+        for (const item of res) {
+          item.value = '... loading'
+        }
 
-            for (const key in data) {
-              const item = data[key]
-              parameter.push({
-                id: parseInt(key, 10),
-                name: item.name
-              })
-            }
-            localStorage[id] = JSON.stringify(parameter)
-            this.parameter = parameter
-          })
+        this.parameter = res
+
+        for (const item of this.parameter) {
+          item.value = await this.getValue(item.id)
+        }
       }
     }
 
